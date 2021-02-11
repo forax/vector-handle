@@ -1,5 +1,6 @@
 # vector-handle
 A high level API to express vectorized operations on primitive arrays in Java
+allowing to specify the vectorized operations as a simple lambda.
 
 ## example
 ```java
