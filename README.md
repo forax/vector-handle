@@ -14,7 +14,7 @@ System.out.println(Arrays.toString(dest)); // [9, 10, 11, 12]
 
 ## available operations
 The lambda used by the variations of the method `apply()` only accept the following operator
-- constants (any static final field): Foo.A_CONSTANT
+- constants (any static final fields): Foo.A_CONSTANT
 - literals: 1, 1L, 1.0f, 1.0  
 - parameters (any lambda parameters): x, y, etc  
 - Unary operator: -
