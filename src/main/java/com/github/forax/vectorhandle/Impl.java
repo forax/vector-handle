@@ -89,7 +89,9 @@ import static org.objectweb.asm.Opcodes.V11;
 
 class Impl {
   static final VectorSpecies<Integer> INT_SPECIES = IntVector.SPECIES_PREFERRED;
+  static final VectorSpecies<Long> LONG_SPECIES = LongVector.SPECIES_PREFERRED;
   static final VectorSpecies<Float> FLOAT_SPECIES = FloatVector.SPECIES_PREFERRED;
+  static final VectorSpecies<Double> DOUBLE_SPECIES = DoubleVector.SPECIES_PREFERRED;
 
   static MethodHandle createMH(Lookup lookup, Class<?> returnType, Class<?>[] parameterTypes) {
     requireNonNull(lookup);
@@ -228,7 +230,7 @@ class Impl {
 
         // local variables need to be re-numbered because long/double takes two slots
         var parameterTypes = Type.getArgumentTypes(descriptor);
-        var varIndexArray = new int[parameterTypes.length];
+        var varIndexArray = new int[Type.getArgumentsAndReturnSizes(descriptor) >> 2];
         var slot = 0;
         for(var i = 0; i < parameterTypes.length; i++) {
           varIndexArray[slot] = i;
@@ -437,7 +439,7 @@ class Impl {
       public static Type from(String descriptor) {
         return switch (descriptor) {
           case "I" -> Type.INT;
-          case "L" -> Type.LONG;
+          case "J" -> Type.LONG;
           case "F" -> Type.FLOAT;
           case "D" -> Type.DOUBLE;
           default -> throw new IllegalStateException("invalid descriptor " + descriptor);
