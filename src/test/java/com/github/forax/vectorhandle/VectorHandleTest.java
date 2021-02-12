@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class VectorHandleTest {
   @Test
   public void applyII() {
-    var vh = VectorHandle.of(lookup(), int.class, int.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new int[3];
     var a = new int[] { 1, 2, 3 };
@@ -19,7 +19,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyLL() {
-    var vh = VectorHandle.of(lookup(), long.class, long.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new long[3];
     var a = new long[] { 1, 2, 3 };
@@ -28,7 +28,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyFF() {
-    var vh = VectorHandle.of(lookup(), float.class, float.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new float[3];
     var a = new float[] { 1, 2, 3 };
@@ -37,7 +37,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyDD() {
-    var vh = VectorHandle.of(lookup(), double.class, double.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new double[3];
     var a = new double[] { 1, 2, 3 };
@@ -46,7 +46,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyIIHuge() {
-    var vh = VectorHandle.of(lookup(), int.class, int.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new int[10_000];
     var a = new int[10_000];
@@ -58,7 +58,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyLLHuge() {
-    var vh = VectorHandle.of(lookup(), long.class, long.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new long[10_000];
     var a = new long[10_000];
@@ -70,7 +70,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyFFHuge() {
-    var vh = VectorHandle.of(lookup(), float.class, float.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new float[10_000];
     var a = new float[10_000];
@@ -82,7 +82,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyDDHuge() {
-    var vh = VectorHandle.of(lookup(), double.class, double.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new double[10_000];
     var a = new double[10_000];
@@ -95,7 +95,7 @@ public class VectorHandleTest {
 
   @Test
   public void applyIII() {
-    var vh = VectorHandle.of(lookup(), int.class, int.class, int.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new int[4];
     var a = new int[] { 1, 2, 3, 4 };
@@ -105,7 +105,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyLLL() {
-    var vh = VectorHandle.of(lookup(), long.class, long.class, long.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new long[4];
     var a = new long[] { 1, 2, 3, 4 };
@@ -115,7 +115,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyFFF() {
-    var vh = VectorHandle.of(lookup(), float.class, float.class, float.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new float[4];
     var a = new float[] { 1, 2, 3, 4 };
@@ -125,7 +125,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyDDD() {
-    var vh = VectorHandle.of(lookup(), double.class, double.class, double.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new double[4];
     var a = new double[] { 1, 2, 3, 4 };
@@ -135,7 +135,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyIIIHuge() {
-    var vh = VectorHandle.of(lookup(), int.class, int.class, int.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new int[10_000];
     var a = new int[10_000];
@@ -149,7 +149,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyLLLHuge() {
-    var vh = VectorHandle.of(lookup(), long.class, long.class, long.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new long[10_000];
     var a = new long[10_000];
@@ -163,7 +163,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyFFFHuge() {
-    var vh = VectorHandle.of(lookup(), float.class, float.class, float.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new float[10_000];
     var a = new float[10_000];
@@ -177,7 +177,7 @@ public class VectorHandleTest {
   }
   @Test
   public void applyDDDHuge() {
-    var vh = VectorHandle.of(lookup(), double.class, double.class, double.class);
+    var vh = VectorHandle.of(lookup());
 
     var dest = new double[10_000];
     var a = new double[10_000];

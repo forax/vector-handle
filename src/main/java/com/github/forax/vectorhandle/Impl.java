@@ -93,16 +93,9 @@ class Impl {
   static final VectorSpecies<Float> FLOAT_SPECIES = FloatVector.SPECIES_PREFERRED;
   static final VectorSpecies<Double> DOUBLE_SPECIES = DoubleVector.SPECIES_PREFERRED;
 
-  static MethodHandle createMH(Lookup lookup, Class<?> returnType, Class<?>[] parameterTypes) {
+  static MethodHandle createMH(Lookup lookup) {
     requireNonNull(lookup);
-    requireNonNull(returnType);
-    for(var parameterType: parameterTypes) {
-      requireNonNull(parameterType);
-    }
-    if (parameterTypes.length > 4) {
-      throw new IllegalArgumentException("too many vectors, not yet supported");
-    }
-    return new CallSiteCache(lookup, returnType, parameterTypes).dynamicInvoker();
+    return new CallSiteCache(lookup).dynamicInvoker();
   }
 
   private static class CallSiteCache extends MutableCallSite {
@@ -121,14 +114,10 @@ class Impl {
     }
 
     private final Lookup lookup;
-    private final Class<?> returnType;
-    private final Class<?>[] parameterTypes;
 
-    private CallSiteCache(Lookup lookup, Class<?> returnType, Class<?>[] parameterTypes) {
+    private CallSiteCache(Lookup lookup) {
       super(MethodType.genericMethodType(5));
       this.lookup = lookup;
-      this.returnType = returnType;
-      this.parameterTypes = parameterTypes;
       setTarget(FALLBACK.bindTo(this));
     }
 
@@ -151,22 +140,17 @@ class Impl {
         throw new IllegalStateException("The operator lambda should be desugared as a static method");
       }
 
-      var signature = Arrays.stream(parameterTypes).map(Class::descriptorString).collect(joining("", "(", ')' + returnType.descriptorString()));
-      if (!serializedLambda.getFunctionalInterfaceMethodSignature().equals(signature)) {
-        throw new IllegalStateException("The operator lambda descriptor " + serializedLambda.getFunctionalInterfaceMethodSignature()
-            + " do not match the VectorHandle descriptor " + signature);
-      }
+      var lambdaDesc = serializedLambda.getFunctionalInterfaceMethodSignature();
+      var lambdaMethodType = MethodType.fromMethodDescriptorString(lambdaDesc, lookup.lookupClass().getClassLoader());
+      var returnExprType = Expr.Type.from(lambdaMethodType.returnType());
+      var parameterExprTypes = lambdaMethodType.parameterList().stream().map(Expr.Type::from).toArray(Expr.Type[]::new);
 
       var bytecode = loadBytecode(lookup.lookupClass(), serializedLambda.getImplClass());
       var expr = walk(bytecode, serializedLambda.getImplMethodName(), serializedLambda.getImplMethodSignature());
       //System.err.println("expr " + expr);
 
-      var returnExprType = Expr.Type.from(returnType);
-      var parameterExprTypes = Arrays.stream(parameterTypes).map(Expr.Type::from).toArray(Expr.Type[]::new);
       var classData = gen(lookup.lookupClass(), expr, returnExprType, parameterExprTypes);
-
       var hiddenLookup = lookup.defineHiddenClass(classData, true, Lookup.ClassOption.NESTMATE, Lookup.ClassOption.STRONG);
-
       var mh = hiddenLookup.findStatic(hiddenLookup.lookupClass(), "lambda",
             methodType(returnExprType.vectorClass, Arrays.stream(parameterExprTypes).map(type -> type.vectorClass).toArray(Class[]::new)));
 
