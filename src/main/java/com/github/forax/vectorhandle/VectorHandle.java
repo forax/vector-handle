@@ -375,7 +375,7 @@ public interface VectorHandle {
     var target = Impl.createMH(lookup);
     return (operator, va, vb, vc, vd) -> {
       try {
-        return target.invoke(operator, va, vb, vc, vd);
+        return target.invokeExact(operator, va, vb, vc, vd);
       } catch(RuntimeException | Error e) {
         throw e;
       } catch (Throwable t) {
