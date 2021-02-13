@@ -186,11 +186,15 @@ public interface VectorHandle {
     if (a.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += INT_SPECIES.length()) {
-      var mask = INT_SPECIES.indexInRange(i, length);
-      var va = IntVector.fromArray(INT_SPECIES, a, i, mask);
-      var vc = (IntVector) invoke(operator, va, null, null, null);
-      vc.intoArray(dest, i, mask);
+    int i = 0;
+    int bound = INT_SPECIES.loopBound(a.length);
+    for (; i < bound; i += INT_SPECIES.length()) {
+      var va = IntVector.fromArray(INT_SPECIES, a, i);
+      var vb = (IntVector) invoke(operator, va, null, null, null);
+      vb.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i]);
     }
   }
 
@@ -208,11 +212,15 @@ public interface VectorHandle {
     if (a.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += LONG_SPECIES.length()) {
-      var mask = LONG_SPECIES.indexInRange(i, length);
-      var va = LongVector.fromArray(LONG_SPECIES, a, i, mask);
-      var vc = (LongVector) invoke(operator, va, null, null, null);
-      vc.intoArray(dest, i, mask);
+    int i = 0;
+    int bound = LONG_SPECIES.loopBound(a.length);
+    for (; i < bound; i += LONG_SPECIES.length()) {
+      var va = LongVector.fromArray(LONG_SPECIES, a, i);
+      var vb = (LongVector) invoke(operator, va, null, null, null);
+      vb.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i]);
     }
   }
 
@@ -230,11 +238,15 @@ public interface VectorHandle {
     if (a.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += FLOAT_SPECIES.length()) {
-      var mask = FLOAT_SPECIES.indexInRange(i, length);
-      var va = FloatVector.fromArray(FLOAT_SPECIES, a, i, mask);
-      var vc = (FloatVector) invoke(operator, va, null, null, null);
-      vc.intoArray(dest, i, mask);
+    int i = 0;
+    int bound = FLOAT_SPECIES.loopBound(a.length);
+    for (; i < bound; i += FLOAT_SPECIES.length()) {
+      var va = FloatVector.fromArray(FLOAT_SPECIES, a, i);
+      var vb = (FloatVector) invoke(operator, va, null, null, null);
+      vb.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i]);
     }
   }
 
@@ -252,11 +264,15 @@ public interface VectorHandle {
     if (a.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += DOUBLE_SPECIES.length()) {
-      var mask = DOUBLE_SPECIES.indexInRange(i, length);
-      var va = DoubleVector.fromArray(DOUBLE_SPECIES, a, i, mask);
-      var vc = (DoubleVector) invoke(operator, va, null, null, null);
-      vc.intoArray(dest, i, mask);
+    int i = 0;
+    int bound = DOUBLE_SPECIES.loopBound(a.length);
+    for (; i < bound; i += DOUBLE_SPECIES.length()) {
+      var va = DoubleVector.fromArray(DOUBLE_SPECIES, a, i);
+      var vb = (DoubleVector) invoke(operator, va, null, null, null);
+      vb.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i]);
     }
   }
 
@@ -274,12 +290,16 @@ public interface VectorHandle {
     if (a.length != length || b.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += INT_SPECIES.length()) {
-      var mask = INT_SPECIES.indexInRange(i, length);
-      var va = IntVector.fromArray(INT_SPECIES, a, i, mask);
-      var vb = IntVector.fromArray(INT_SPECIES, b, i, mask);
+    int i = 0;
+    int bound = INT_SPECIES.loopBound(a.length);
+    for (; i < bound; i += INT_SPECIES.length()) {
+      var va = IntVector.fromArray(INT_SPECIES, a, i);
+      var vb = IntVector.fromArray(INT_SPECIES, b, i);
       var vc = (IntVector) invoke(operator, va, vb, null, null);
-      vc.intoArray(dest, i, mask);
+      vc.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i], b[i]);
     }
   }
 
@@ -297,12 +317,16 @@ public interface VectorHandle {
     if (a.length != length || b.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += LONG_SPECIES.length()) {
-      var mask = LONG_SPECIES.indexInRange(i, length);
-      var va = LongVector.fromArray(LONG_SPECIES, a, i, mask);
-      var vb = LongVector.fromArray(LONG_SPECIES, b, i, mask);
+    int i = 0;
+    int bound = LONG_SPECIES.loopBound(a.length);
+    for (; i < bound; i += LONG_SPECIES.length()) {
+      var va = LongVector.fromArray(LONG_SPECIES, a, i);
+      var vb = LongVector.fromArray(LONG_SPECIES, b, i);
       var vc = (LongVector) invoke(operator, va, vb, null, null);
-      vc.intoArray(dest, i, mask);
+      vc.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i], b[i]);
     }
   }
 
@@ -320,12 +344,16 @@ public interface VectorHandle {
     if (a.length != length || b.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += FLOAT_SPECIES.length()) {
-      var mask = FLOAT_SPECIES.indexInRange(i, length);
-      var va = FloatVector.fromArray(FLOAT_SPECIES, a, i, mask);
-      var vb = FloatVector.fromArray(FLOAT_SPECIES, b, i, mask);
+    int i = 0;
+    int bound = FLOAT_SPECIES.loopBound(a.length);
+    for (; i < bound; i += FLOAT_SPECIES.length()) {
+      var va = FloatVector.fromArray(FLOAT_SPECIES, a, i);
+      var vb = FloatVector.fromArray(FLOAT_SPECIES, b, i);
       var vc = (FloatVector) invoke(operator, va, vb, null, null);
-      vc.intoArray(dest, i, mask);
+      vc.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i], b[i]);
     }
   }
 
@@ -343,12 +371,16 @@ public interface VectorHandle {
     if (a.length != length || b.length != length) {
       throw new IllegalArgumentException("wrong length");
     }
-    for (int i = 0; i < length; i += DOUBLE_SPECIES.length()) {
-      var mask = DOUBLE_SPECIES.indexInRange(i, length);
-      var va = DoubleVector.fromArray(DOUBLE_SPECIES, a, i, mask);
-      var vb = DoubleVector.fromArray(DOUBLE_SPECIES, b, i, mask);
+    int i = 0;
+    int bound = DOUBLE_SPECIES.loopBound(a.length);
+    for (; i < bound; i += DOUBLE_SPECIES.length()) {
+      var va = DoubleVector.fromArray(DOUBLE_SPECIES, a, i);
+      var vb = DoubleVector.fromArray(DOUBLE_SPECIES, b, i);
       var vc = (DoubleVector) invoke(operator, va, vb, null, null);
-      vc.intoArray(dest, i, mask);
+      vc.intoArray(dest, i);
+    }
+    for (; i < a.length; i++) {
+      dest[i] = operator.apply(a[i], b[i]);
     }
   }
 

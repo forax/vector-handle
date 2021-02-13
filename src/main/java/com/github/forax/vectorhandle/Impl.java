@@ -140,13 +140,13 @@ class Impl {
         throw new IllegalStateException("The operator lambda should be desugared as a static method");
       }
 
-      var lambdaDesc = serializedLambda.getFunctionalInterfaceMethodSignature();
-      var lambdaMethodType = MethodType.fromMethodDescriptorString(lambdaDesc, lookup.lookupClass().getClassLoader());
+      var lambdaMethodDesc = serializedLambda.getImplMethodSignature();
+      var lambdaMethodType = MethodType.fromMethodDescriptorString(lambdaMethodDesc, lookup.lookupClass().getClassLoader());
       var returnExprType = Expr.Type.from(lambdaMethodType.returnType());
       var parameterExprTypes = lambdaMethodType.parameterList().stream().map(Expr.Type::from).toArray(Expr.Type[]::new);
 
       var bytecode = loadBytecode(lookup.lookupClass(), serializedLambda.getImplClass());
-      var expr = walk(bytecode, serializedLambda.getImplMethodName(), serializedLambda.getImplMethodSignature());
+      var expr = walk(bytecode, serializedLambda.getImplMethodName(), lambdaMethodDesc);
       //System.err.println("expr " + expr);
 
       var classData = gen(lookup.lookupClass(), expr, returnExprType, parameterExprTypes);
@@ -456,7 +456,7 @@ class Impl {
   private static byte[] gen(Class<?> lookupClass, Expr expr, Expr.Type returnType, Expr.Type[] parameterTypes) {
     var className = nameFrom(lookupClass) + "$Template";
     var writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-    writer.visit(V11,ACC_FINAL| ACC_SUPER, className, null, "java/lang/Object", null);
+    writer.visit(V11,ACC_FINAL | ACC_SUPER, className, null, "java/lang/Object", null);
     var desc = Arrays.stream(parameterTypes)
         .map(type -> type.vectorClass.descriptorString())
         .collect(joining("", "(", ")" + returnType.vectorClass.descriptorString()));
