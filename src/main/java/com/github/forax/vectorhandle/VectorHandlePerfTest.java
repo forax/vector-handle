@@ -21,7 +21,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @Warmup(iterations = 5, time = 5)
 @Measurement(iterations = 5, time = 5)
-@Fork(value = 3, jvmArgs = {"--add-modules", "jdk.incubator.vector", "-XX:+PrintCompilation"})
+@Fork(value = 1, jvmArgs = {"--add-modules", "jdk.incubator.vector"})
 @State(Scope.Benchmark)
 public class VectorHandlePerfTest {
   private static final VectorSpecies<Integer> INT_SPECIES = IntVector.SPECIES_PREFERRED;
