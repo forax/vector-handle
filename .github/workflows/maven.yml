@@ -1,5 +1,3 @@
-name: Java CI with Maven
-
 on:
   push:
     branches: [ main ]
@@ -12,7 +10,7 @@ jobs:
     strategy:
       matrix:
         java: [ 16-ea ]
-    name: Java ${{ matrix.java }} sample
+    name: Java ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v2
       - name: setup
